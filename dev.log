@@ -1,0 +1,56 @@
+
+> intuixion-app@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.229:3000
+- Environments: .env.local
+✓ Ready in 619ms
+
+Each child in a list should have a unique "key" prop.
+
+Check the render method of `Problem`. See https://react.dev/link/warning-keys for more information.
+ GET / 200 in 1112ms (next.js: 264ms, proxy.ts: 313ms, application-code: 536ms)
+[browser] Each child in a list should have a unique "key" prop.
+
+Check the render method of `Problem`. See https://react.dev/link/warning-keys for more information. 
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <SegmentViewNode type="layout" pagePath="layout.tsx">
+      <SegmentTrieNode>
+      <link>
+      <script>
+      <script>
+      <script>
+      <RootLayout>
+        <ClerkProvider>
+          <ClientClerkProvider publishableKey="pk_test_bG..." proxyUrl="" domain="" isSatellite={false} ...>
+            ...
+              <ClerkProvider publishableKey="pk_test_bG..." proxyUrl="" domain="" isSatellite={false} ...>
+                <ClerkProviderBase publishableKey="pk_test_bG..." proxyUrl="" domain="" isSatellite={false} ...>
+                  <ClerkContextProvider initialState={undefined} clerk={{clerkjs:null, ...}} clerkStatus="loading">
+                    <InitialStateProvider initialState={undefined}>
+                      <__experimental_CheckoutProvider value={undefined}>
+                        <RouterTelemetry>
+                        <ClerkScripts>
+                        <html lang="en" className="h-full">
+                          <body
+                            className="h-full antialiased"
+-                           data-new-gr-c-s-check-loaded="14.1299.0"
+-                           data-gr-ext-installed=""
+                          >
+ 
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://loving-sponge-81.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js:12:3216)
+✓ Finished writing to filesystem cache in 40.7min

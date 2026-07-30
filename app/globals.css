@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Fix #8 — aligned with landing page color tokens */
+:root {
+  --bg:         #07070f;
+  --surface:    #0d0d1a;
+  --surface-2:  #131320;
+  --border:     #1e1e30;
+  --primary:    #6d5fff;
+  --primary-lt: #9d94ff;
+  --accent:     #00d4a8;
+  --text:       #eeeef8;
+  --muted:      #9090b8;
+  --text-dim:   #6868a0;
+  --success:    #22c55e;
+  --danger:     #ef4444;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  margin: 0;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Answer prose */
+.answer-prose p  { margin: 0.4rem 0; line-height: 1.75; }
+.answer-prose ul { padding-left: 1.2rem; margin: 0.4rem 0; }
+.answer-prose li { margin: 0.2rem 0; }
+.answer-prose strong { color: var(--text); font-weight: 600; }
