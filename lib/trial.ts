@@ -10,7 +10,7 @@ export const DAILY_LIMIT: Record<string, number> = {
   team:    Infinity,
 };
 
-export type Plan = "trial" | "starter" | "pro" | "team" | "expired";
+export type Plan = "trial" | "starter" | "pro" | "team" | "expired" | "pilot";
 
 export function daysLeftInTrial(createdAt: Date): number {
   const ms      = TRIAL_DAYS * 24 * 60 * 60 * 1000;
@@ -19,9 +19,9 @@ export function daysLeftInTrial(createdAt: Date): number {
 }
 
 export function planLabel(plan: Plan): string {
-  return { trial: "Free Trial", starter: "Starter", pro: "Pro", team: "Team", expired: "Expired" }[plan] ?? plan;
+  return { trial: "Free Trial", starter: "Starter", pro: "Pro", team: "Team", expired: "Expired", pilot: "Pilot" }[plan] ?? plan;
 }
 
 export function planColor(plan: Plan): string {
-  return { trial: "#f59e0b", starter: "#6d5fff", pro: "#00d4a8", team: "#9d94ff", expired: "#ef4444" }[plan] ?? "#6868a0";
+  return { trial: "#f59e0b", starter: "#2a5fd8", pro: "#0d9488", team: "#0d9488", expired: "#dc2626", pilot: "#0c2340" }[plan] ?? "#9aa0a6";
 }

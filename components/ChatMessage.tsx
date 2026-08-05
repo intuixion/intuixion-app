@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { User, Bot, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import CitationCard from "./CitationCard";
 import type { Citation } from "@/lib/api";
 
@@ -18,43 +18,66 @@ function formatMs(ms: number) {
   return ms >= 1000 ? `${(ms / 1000).toFixed(1)}s` : `${ms}ms`;
 }
 
+function BrandMark() {
+  return (
+    <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="32" height="32">
+        <rect width="56" height="56" rx="12" fill="#0c2340"/>
+        <line x1="33" y1="24" x2="50" y2="11" stroke="#2dd4bf" strokeWidth="5.5" strokeLinecap="round"/>
+        <line x1="23" y1="28" x2="7"  y2="44" stroke="#2dd4bf" strokeWidth="5.5" strokeLinecap="round"/>
+        <circle cx="28" cy="11" r="8" fill="#ffffff"/>
+        <rect x="22" y="22" width="12" height="28" rx="6" fill="#ffffff"/>
+      </svg>
+    </div>
+  );
+}
+
 export default function ChatMessage({ msg }: { msg: Message }) {
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   const isUser = msg.role === "user";
 
-  return (
-    <div className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
-      {/* Avatar */}
-      {!isUser && (
+  if (isUser) {
+    return (
+      <div className="flex justify-end">
         <div
           style={{
-            background: msg.error ? "#ef444430" : "var(--primary)30",
-            border: `1px solid ${msg.error ? "#ef4444" : "var(--primary)"}`,
-            borderRadius: 8,
-            flexShrink: 0,
+            background: "var(--primary)",
+            color: "white",
+            borderRadius: "12px 12px 3px 12px",
+            padding: "10px 16px",
+            fontSize: 14,
+            lineHeight: 1.65,
+            maxWidth: "72%",
           }}
-          className="w-8 h-8 flex items-center justify-center mt-0.5"
-        >
-          <Bot size={15} style={{ color: msg.error ? "#ef4444" : "var(--primary)" }} />
-        </div>
-      )}
+          dangerouslySetInnerHTML={{ __html: formatAnswer(msg.content) }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex gap-3 justify-start">
+      <div className="mt-0.5">
+        <BrandMark />
+      </div>
 
       <div style={{ maxWidth: "80%" }} className="flex flex-col gap-2">
-        {/* Bubble */}
+        {/* Answer — document card, not a bubble */}
         <div
           style={{
-            background: isUser ? "var(--primary)" : "var(--surface-2)",
-            border: `1px solid ${isUser ? "transparent" : msg.error ? "#ef444440" : "var(--border)"}`,
-            borderRadius: isUser ? "18px 18px 4px 18px" : "4px 18px 18px 18px",
-            padding: "10px 14px",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderLeft: msg.error ? "3px solid var(--danger)" : "3px solid var(--accent)",
+            borderRadius: "0 8px 8px 8px",
+            padding: "12px 16px",
           }}
         >
           <div
             className="answer-prose"
             style={{
-              color: isUser ? "white" : msg.error ? "#fca5a5" : "var(--text)",
+              color: msg.error ? "var(--danger)" : "var(--text)",
               fontSize: 14,
-              lineHeight: 1.7,
+              lineHeight: 1.75,
               whiteSpace: "pre-wrap",
             }}
             dangerouslySetInnerHTML={{ __html: formatAnswer(msg.content) }}
@@ -62,8 +85,8 @@ export default function ChatMessage({ msg }: { msg: Message }) {
         </div>
 
         {/* Timing */}
-        {!isUser && msg.retrieval_ms != null && (
-          <div className="flex items-center gap-3 px-1">
+        {msg.retrieval_ms != null && (
+          <div className="flex items-center gap-2 px-1">
             <Clock size={10} style={{ color: "var(--text-dim)" }} />
             <span style={{ fontSize: 11, color: "var(--text-dim)" }}>
               retrieval {formatMs(msg.retrieval_ms)} · answer {formatMs(msg.answer_ms ?? 0)}
@@ -72,10 +95,10 @@ export default function ChatMessage({ msg }: { msg: Message }) {
         )}
 
         {/* Citations */}
-        {!isUser && msg.citations && msg.citations.length > 0 && (
+        {msg.citations && msg.citations.length > 0 && (
           <div className="flex flex-col gap-1.5">
-            <p style={{ fontSize: 11, color: "var(--text-dim)", margin: "2px 0 0 4px" }}>
-              {msg.citations.length} source{msg.citations.length > 1 ? "s" : ""} — click to expand
+            <p style={{ fontSize: 11, color: "var(--text-dim)", margin: "2px 0 0 2px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+              {msg.citations.length} source{msg.citations.length > 1 ? "s" : ""}
             </p>
             {msg.citations.map((c, i) => (
               <CitationCard
@@ -89,15 +112,6 @@ export default function ChatMessage({ msg }: { msg: Message }) {
           </div>
         )}
       </div>
-
-      {isUser && (
-        <div
-          style={{ background: "var(--surface-2)", border: "1px solid var(--border)", borderRadius: 8, flexShrink: 0 }}
-          className="w-8 h-8 flex items-center justify-center mt-0.5"
-        >
-          <User size={14} style={{ color: "var(--text-dim)" }} />
-        </div>
-      )}
     </div>
   );
 }

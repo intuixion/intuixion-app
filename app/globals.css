@@ -2,18 +2,18 @@
 
 /* Fix #8 — aligned with landing page color tokens */
 :root {
-  --bg:         #07070f;
-  --surface:    #0d0d1a;
-  --surface-2:  #131320;
-  --border:     #1e1e30;
-  --primary:    #6d5fff;
-  --primary-lt: #9d94ff;
-  --accent:     #00d4a8;
-  --text:       #eeeef8;
-  --muted:      #9090b8;
-  --text-dim:   #6868a0;
-  --success:    #22c55e;
-  --danger:     #ef4444;
+  --bg:         #f9f8f5;
+  --surface:    #ffffff;
+  --surface-2:  #f1f0ed;
+  --border:     #e3e0da;
+  --primary:    #0c2340;
+  --primary-lt: #0d9488;
+  --accent:     #0d9488;
+  --text:       #0d0d0d;
+  --muted:      #5f6368;
+  --text-dim:   #9aa0a6;
+  --success:    #16a34a;
+  --danger:     #dc2626;
 }
 
 * { box-sizing: border-box; }
@@ -28,6 +28,10 @@ body {
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--surface); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Suppress Clerk development-mode floating badge (dev-only artifact, gone in production) */
+[id^="clerk-"] iframe,
+.cl-devBrowser { display: none !important; }
 
 /* Answer prose */
 .answer-prose p  { margin: 0.4rem 0; line-height: 1.75; }
