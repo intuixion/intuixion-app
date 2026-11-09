@@ -1,16 +1,17 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 // Clerk's getToken (from useAuth) — the API requires a bearer token on every /v1 route.
-export type TokenGetter = () => Promise<string | null>;
+export type TokenGetter = (options?: { skipCache?: boolean }) => Promise<string | null>;
 
 async function authHeaders(getToken: TokenGetter): Promise<Record<string, string>> {
-  const token = await getToken();
-  if (!token) throw new Error("Your session has expired. Please sign in again.");
+  let token = await getToken();
+  if (!token) token = await getToken({ skipCache: true });
+  if (!token) throw new Error("No session token — please sign out and sign back in.");
   return { Authorization: `Bearer ${token}` };
 }
 
 async function failureMessage(res: Response, fallback: string): Promise<string> {
-  if (res.status === 401) return "Your session has expired. Please sign in again.";
+  if (res.status === 401) return "API rejected your credentials — please sign out and sign back in.";
   // 429 and other errors carry a readable message in `detail` (e.g. "Rate limit reached…")
   const err = await res.json().catch(() => ({}));
   return typeof err.detail === "string" ? err.detail : `${fallback}: ${res.status}`;
