@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 import { Send, Loader, ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import ChatMessage, { type Message } from "@/components/ChatMessage";
@@ -29,6 +30,7 @@ const PILOT_SEATS = process.env.NEXT_PUBLIC_PILOT_SEATS  ?? "";
 const PILOT_ROLE  = process.env.NEXT_PUBLIC_PILOT_ROLE   ?? "Admin";
 
 export default function DemoPage() {
+  const { getToken } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,8 +42,8 @@ export default function DemoPage() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    getSources().then(setSources).catch(() => {});
-  }, []);
+    getSources(getToken).then(setSources).catch(() => {});
+  }, [getToken]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -54,7 +56,7 @@ export default function DemoPage() {
     setInput("");
     setLoading(true);
     try {
-      const res = await queryCopus(question, sector || undefined);
+      const res = await queryCopus(getToken, question, sector || undefined);
       const assistantMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",

@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 import { Upload, X, CheckCircle, Loader } from "lucide-react";
 import { ingestFile } from "@/lib/api";
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function FileUpload({ onIngested }: Props) {
+  const { getToken } = useAuth();
   const [dragging, setDragging] = useState(false);
   const [status, setStatus] = useState<"idle" | "uploading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -22,7 +24,7 @@ export default function FileUpload({ onIngested }: Props) {
     setStatus("uploading");
     setMessage(`Uploading ${file.name}…`);
     try {
-      const res = await ingestFile(file, "cross");
+      const res = await ingestFile(getToken, file, "cross");
       setStatus("done");
       setMessage(`${file.name} — ${res.chunks} chunks ingested`);
       onIngested(file.name, res.chunks);
